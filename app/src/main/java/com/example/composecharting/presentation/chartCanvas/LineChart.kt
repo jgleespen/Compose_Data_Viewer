@@ -8,14 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 import com.example.composecharting.data.bundle.GraphData
 
-//TODO
+// TODO
 // -> curved line option
 // -> add coloring options for lines/grid
 @Composable
@@ -36,8 +41,10 @@ fun LineChart(
     var offset by remember { mutableStateOf(offset) }
     var scale by remember { mutableStateOf(scale) }
     Canvas(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
+            .clip(shape = RectangleShape)
             .background(color = colors.surface)
             .pointerInput(Unit) {
                 detectTransformGestures(
@@ -45,10 +52,12 @@ fun LineChart(
                     onGesture = { centroid, pan, zoom, _ ->
                         val oldScale = scale
                         val newScale = (scale * zoom).coerceIn(1f, 2f)
-                        val newOffset = (offset + centroid / oldScale) - (centroid / newScale + pan / oldScale)
+                        val newOffset =
+                            (offset + centroid / oldScale) - (centroid / newScale + pan / oldScale)
                         val maxX = size.width * (newScale - 1f) / newScale
                         val maxY = size.height * (newScale - 1f) / newScale
-                        offset = Offset(newOffset.x.coerceIn(0f, maxX), newOffset.y.coerceIn(0f, maxY))
+                        offset =
+                            Offset(newOffset.x.coerceIn(0f, maxX), newOffset.y.coerceIn(0f, maxY))
                         scale = newScale
                         onScaleChanged(scale)
                         onOffsetChanged(offset)
@@ -64,146 +73,95 @@ fun LineChart(
                 transformOrigin = TransformOrigin(0f, 0f)
             }
     ) {
+        //30.dp point padding
+        //25.dp grid padding
+        val maxX = size.width * (scale - 1f) / scale
+        val maxY = size.height * (scale - 1f) / scale
+        val width = size.width - 10.dp.toPx()
 
-        val incrementY = (size.height / (totalYMax - totalYMin)) * 10f
+
+        val decrementY = (size.height / (totalYMax - totalYMin)) * 5f
         var stepY = size.height
-        for (i in 0..size.height.toInt()) {
-            drawLine(
-                start = Offset(size.width, stepY),
-                end = Offset(0f, stepY),
-                color = Color.Black,
-                strokeWidth = 7f / scale,
-                alpha = 0.3f
-            )
-            stepY -= incrementY
-
+        for (i in 0..(size.height.toInt())) {
+            if (stepY < (size.height))
+                drawLine(
+                    start = Offset(offset.x + (size.width / scale), stepY),
+                    end = Offset(offset.x, stepY),
+                    color = Color.Black,
+                    strokeWidth = 2.dp.toPx() / scale,
+                    alpha = 0.3f
+                )
+            stepY -= decrementY
         }
-        val width = size.width.toFloat()
-        val height = size.height.toFloat()
+
+        drawLine(
+            start = Offset(
+                x = offset.x,
+                y = offset.y + (size.height - maxY)
+            ),
+            end = Offset(
+                x = offset.x + (size.width  / scale),
+                y = offset.y + (size.height - maxY)
+            ),
+            color = colors.onSurface,
+            strokeWidth = 5.dp.toPx() / scale
+        )
+        drawLine(
+            start = Offset(
+                offset.x,
+                offset.y
+            ),
+            end = Offset(
+                offset.x,
+                size.height
+            ),
+            color = colors.onSurface,
+            strokeWidth = 5.dp.toPx() / scale
+        )
+
+
         graphData.graphDataList.coordinates.forEach { dataSet ->
-            val temp = graphData.coordinateFormatter.normalizeCoordinates(
-                listX = dataSet.coordinateArray[0],
-                listY = dataSet.coordinateArray[1],
-                yMax = totalYMax,
-                yMin = totalYMin,
-                xMax = dataSet.xMax,
-                xMin = dataSet.xMin,
-                height = size.height,
-                width = size.width,
-                padding = graphData.padding
-            )
+            val temp =
+                graphData.coordinateFormatter.normalizeCoordinates(
+                    listX = dataSet.coordinateArray[0],
+                    listY = dataSet.coordinateArray[1],
+                    yMax = totalYMax,
+                    yMin = totalYMin,
+                    xMax = dataSet.xMax,
+                    xMin = dataSet.xMin,
+                    height = size.height,
+                    width = width,
+                    padding = graphData.padding
+                )
 
             var i = 0
+            drawRect(
+                color = Color.Transparent,
+                topLeft = offset,
+                size = Size(width = (width - 15.dp.toPx()) / scale, height = size.height / scale)
+            )
             while (i < temp.size - 1) {
                 drawLine(
                     color = colors.onSurface,
                     start = temp[i],
                     end = temp[i + 1],
-                    strokeWidth = 10f
+                    strokeWidth = 3.5f.dp.toPx()
                 )
-                if (scale > 1.3f)
-                    drawLine(
-                        color = colors.onSurface,
-                        start = temp[i],
-                        end = temp[i + 1],
-                        strokeWidth = 10f / scale
+                drawLine(
+                    color = colors.onSurface,
+                    strokeWidth = 5.dp.toPx() / scale,
+                    start = Offset(
+                        temp[i].x,
+                        temp[i].y + 6.dp.toPx()
+                    ),
+                    end = Offset(
+                        temp[i].x,
+                        temp[i].y - 6.dp.toPx()
                     )
-
-                drawCircle(color = colors.tertiaryContainer, radius = 10f / scale, center = temp[i])
+                )
                 i += 1
             }
-
-
         }
-/*
-            var current =
-                graphData.coordinateFormatter.getCoordList(
-                    listX = graphData.xListCurrent,
-                    listY = graphData.yListCurrent,
-                    yMax = totalYMax,
-                    yMin = totalYMin,
-                    xMax = graphData.xListCurrent.maxOrNull() ?: Float.MIN_VALUE,
-                    xMin = graphData.xListCurrent.minOrNull() ?: Float.MIN_VALUE,
-                    height = height,
-                    width = width,
-                    padding = graphData.padding
-                )
-            var initial =
-                graphData.coordinateFormatter.getCoordList(
-                    listX = graphData.xListInitial,
-                    listY = graphData.yListInitial,
-                    yMax = totalYMax,
-                    yMin = totalYMin,
-                    xMax = graphData.xListInitial.maxOrNull() ?: Float.MIN_VALUE,
-                    xMin = graphData.xListInitial.minOrNull() ?: Float.MIN_VALUE,
-                    height = height,
-                    width = width,
-                    padding = graphData.padding
-                )
-
-            var stepSize = 0f
-            val increment = height / (totalYMax - totalYMin)
-            val x1 = width / (totalXMax)
-            var text = totalYMax
-            for (i in totalYMin.toInt()..(totalYMax.toInt())) {
-                if (i % 10 == 0 && text > totalYMin) {
-                    drawContext.canvas.nativeCanvas.drawText(
-                        "${text}",
-                        (0.5f * (graphData.padding - totalXMin)),
-                        (stepSize + (0.3f * textPaint.textSize)),
-                        textPaint
-                    )
-                    drawLine(
-                        color = colors.onSurface,
-                        start = Offset(x = (graphData.padding - totalXMin) - 8f, y = stepSize),
-                        end = Offset(x = (graphData.padding - totalXMin) + 8f, y = stepSize),
-                        strokeWidth = 5f
-                    )
-                    drawLine(
-                        color = colors.onSurface,
-                        start = Offset((graphData.padding - totalXMin) + 8f, stepSize),
-                        end = Offset(width + graphData.padding, stepSize),
-                        strokeWidth = 2f,
-                        alpha = 0.6f,
-                        pathEffect =
-                        PathEffect.dashPathEffect(
-                            floatArrayOf(x1, x1, x1, x1),
-                        )
-                    )
-                }
-                text -= 1f
-                stepSize += increment
-            }
-
-            for (i in current.indices) {
-                if ((i + 1) < current.size) {
-                    drawLine(
-                        color = colors.onSurface,
-                        start = current[i],
-                        end = current[i + 1],
-                        strokeWidth = 10f
-                    )
-                }
-            }
-            for (i in current.indices) {
-                drawCircle(color = colors.onSurfaceVariant, radius = 10f, center = current[i])
-            }
-
-            for (i in initial.indices) {
-                if ((i + 1) < current.size) {
-                    drawLine(
-                        color = colors.error,
-                        start = initial[i],
-                        end = initial[i + 1],
-                        strokeWidth = 10f
-                    )
-                }
-            }
-            for (i in initial.indices) {
-                drawCircle(color = colors.onSurfaceVariant, radius = 10f, center = initial[i])
-            }
-*/
     }
-
-
 }
+

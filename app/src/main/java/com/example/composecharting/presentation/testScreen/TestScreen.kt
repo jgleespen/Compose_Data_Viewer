@@ -7,7 +7,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.composecharting.data.bundle.GraphData
@@ -17,7 +19,10 @@ import com.example.composecharting.presentation.chartFormatters.ChartWeight
 
 @kotlin.OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestScreen(navController: NavController, viewModel: TestViewModel = hiltViewModel()) {
+fun TestScreen(
+    navController: NavController,
+    viewModel: TestViewModel = hiltViewModel()
+) {
     val colors = MaterialTheme.colorScheme
     val graphUtil by remember { viewModel.dataList }
     val configuration = LocalConfiguration.current
@@ -33,10 +38,11 @@ fun TestScreen(navController: NavController, viewModel: TestViewModel = hiltView
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .background(colors.surface),
+                .background(colors.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
             val graphData by remember {
                 mutableStateOf(
                     GraphData(
@@ -46,33 +52,32 @@ fun TestScreen(navController: NavController, viewModel: TestViewModel = hiltView
                     )
                 )
             }
-            when(orientation){
-                Configuration.ORIENTATION_LANDSCAPE -> {
-                    weights = ChartWeight(
-                        topRowWeight = 0.9f,
-                        bottomRowWeight = 0.1f,
-                        axisWeight = 0.05f,
-                        bodyWeight = 0.9f,
-                    )
-                    textXOffset = 65f
-                }
-                else -> {
-                    weights = ChartWeight(
-                        topRowWeight = 0.9f,
-                        bottomRowWeight = 0.05f,
-                        axisWeight = 0.08f,
-                        bodyWeight = 0.9f,
-                    )
-                    textXOffset = 55f
-                }
-            }
 
-            ChartHolderLandscape(
-                graphData = graphData,
-                colors = colors,
-                textXOffset = textXOffset,
-                weights = weights
-            )
+                when (orientation) {
+                    Configuration.ORIENTATION_LANDSCAPE -> {
+                        weights = ChartWeight(
+                            topRowWeight = 0.9f,
+                            bottomRowWeight = 0.1f,
+                            axisWeight = 0.05f,
+                            bodyWeight = 0.9f,
+                        )
+                        textXOffset = 65f
+                    }
+                    else -> {
+                        weights = ChartWeight(
+                            topRowWeight = 0.9f,
+                            bottomRowWeight = 0.05f,
+                            axisWeight = 0.08f,
+                            bodyWeight = 0.9f,
+                        )
+                        textXOffset = 55f
+                    }
+                }
+            Card(
+                modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(0.85f)
+            ) {
+                ChartHolderLandscape().ChartHolderLandscape(graphData = graphData, colors = colors, textXOffset = textXOffset, weights = weights)
+            }
         }
 
     }

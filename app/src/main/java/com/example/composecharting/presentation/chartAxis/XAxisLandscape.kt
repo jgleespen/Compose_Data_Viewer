@@ -45,6 +45,7 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
     textPaint.value.isLinearText = true
     Canvas(modifier = Modifier
         .fillMaxSize()
+        .clipToBounds()
         .background(color = colors.surface)
         .graphicsLayer {
             scaleX = scale
@@ -54,51 +55,19 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
             transformOrigin = TransformOrigin(0f, 0f)
         }
     ) {
+        val width = size.width - 10.dp.toPx()
         val maxY = size.height * (scale - 1f) / scale
-        val maxX = size.width * (scale - 1f) / scale
+        val maxX = width * (scale - 1f) / scale
         textPaint.value.textSize /= scale
-        drawLine(
-            color = colors.secondary,
-            strokeWidth = (3.dp.toPx()) / scale,
-            start = Offset(
-                offset.x - 10f,
-                offset.y + (5f / scale)
-            ),
-            end = Offset(
-                offset.x + (size.width),
-                offset.y + (5f / scale)
-            )
-        )
-        val increment = (size.width / (xMax.value - xMin.value))
 
+        val increment = (width) / (xMax.value - xMin.value)
 
-        var step = 1f
+        var step = 0f
         var text = xMin.value
 
-     /*   while(r < size.width){
-            if(text.toInt() > 0f  && text.toInt() % 1 == 0) {
-                drawContext.canvas.nativeCanvas.drawText(
-                    "${text.toInt()}",
-                    step - (3.dp.toPx() / scale),
-                    textYOffset + (10.dp.toPx() / scale),
-                    textPaint.value
-                )
-                drawLine(
-                    start = Offset(step, offset.y + (6.dp.toPx() / scale)),
-                    end = Offset(step, offset.y ),
-                    color = androidx.compose.ui.graphics.Color.Black,
-                    strokeWidth = 7f,
-                    alpha = 1f
-                )
-            }
-
-            r += increment.toInt()
-            text += 1f
-            step +=  increment
-        }*/
 
         for (i in 0..xMax.value.toInt()) {
-            if(text.toInt() > 0f && text.toInt() % 1 == 0) {
+            if(text.toInt() > 0f && text.toInt() % 1 == 0 && step <= offset.x + ((width  + 5.dp.toPx()) / scale)) {
                 drawContext.canvas.nativeCanvas.drawText(
                     "${text.toInt()}",
                     step - (3.dp.toPx() / scale),
@@ -107,15 +76,14 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
                 )
                 drawLine(
                     start = Offset(step, offset.y + (6.dp.toPx() / scale)),
-                    end = Offset(step, offset.y ),
+                    end = Offset(step, offset.y),
                     color = androidx.compose.ui.graphics.Color.Black,
-                    strokeWidth = 5f ,
-                    alpha = 0.3f
+                    strokeWidth = 3.dp.toPx() / scale,
+                    alpha = 0.7f
                 )
             }
             text += 1f
             step +=  increment
         }
     }
-
 }
