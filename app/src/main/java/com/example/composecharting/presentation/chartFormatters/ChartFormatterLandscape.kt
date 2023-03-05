@@ -25,143 +25,141 @@ import com.company.strengthtracker.presentation.test_screen.graph_utils.YAxisLan
 import com.example.composecharting.data.bundle.GraphData
 import com.example.composecharting.presentation.chartCanvas.LineChart
 
-class ChartHolderLandscape {
-    @kotlin.OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun ChartHolderLandscape(
-        graphData: GraphData,
-        colors: ColorScheme,
-        textXOffset: Float,
-        weights: ChartWeight
-    ) {
-        var borderOffset by remember { mutableStateOf(Offset.Zero) }
+@kotlin.OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChartHolderLandscape(
+    graphData: GraphData,
+    colors: ColorScheme,
+    textXOffset: Float,
+    weights: ChartWeight
+) {
+    var borderOffset by remember { mutableStateOf(Offset.Zero) }
 
-        var scale by remember { mutableStateOf(1f) }
-        var offset by remember { mutableStateOf(Offset.Zero) }
+    var scale by remember { mutableStateOf(1f) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
 
-        // textPaint to construct text objects within the graph
-        val density = LocalDensity.current
-        val textPaint =
-            remember(density) {
-                Paint().apply {
-                    color = Color.WHITE
-                    textAlign = Paint.Align.LEFT
-                    textSize = density.run { 12.sp.toPx() }
-                }
+    // textPaint to construct text objects within the graph
+    val density = LocalDensity.current
+    val textPaint =
+        remember(density) {
+            Paint().apply {
+                color = Color.WHITE
+                textAlign = Paint.Align.LEFT
+                textSize = density.run { 12.sp.toPx() }
             }
-        textPaint.isAntiAlias = true
-        var pan by remember { mutableStateOf(Offset.Zero) }
+        }
+    textPaint.isAntiAlias = true
+    var pan by remember { mutableStateOf(Offset.Zero) }
 
-        Column(
+    Column(
+        modifier =
+        Modifier
+            .fillMaxSize(1f)
+            .clipToBounds()
+            .onGloballyPositioned { layoutCoordinates ->
+                val rect: Rect = layoutCoordinates.boundsInRoot()
+            },
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .weight(weights.bottomRowWeight)
+                .background(colors.surface),
+        ) {
+
+        }
+        Row(
             modifier =
             Modifier
-                .fillMaxSize(1f)
-                .clipToBounds()
-                .onGloballyPositioned { layoutCoordinates ->
-                    val rect: Rect = layoutCoordinates.boundsInRoot()
-                },
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Top
+                .fillMaxWidth()
+                .weight(weights.topRowWeight)
+                .background(colors.surface),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.End
         ) {
-            Row(
-                modifier = Modifier
+            Column(
+                modifier =
+                Modifier
+                    .background(colors.surface)
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .weight(weights.bottomRowWeight)
-                    .background(colors.surface),
-            ){
-
+                    .weight(weights.axisWeight)
+            ) {
+                YAxisLandscape(
+                    colors = colors,
+                    scale = scale,
+                    offset = offset,
+                    graphData = graphData,
+                    textXOffset = textXOffset
+                )
             }
-            Row(
+            Column(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .weight(weights.topRowWeight)
-                    .background(colors.surface),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.End
+                    .weight(weights.bodyWeight)
+                    .background(colors.surface)
+                    .clip(RectangleShape)
             ) {
-                Column(
-                    modifier =
-                    Modifier
-                        .background(colors.surface)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .weight(weights.axisWeight)
-                ) {
-                    YAxisLandscape(
-                        colors = colors,
-                        scale = scale,
-                        offset = offset,
-                        graphData = graphData,
-                        textXOffset = textXOffset
-                    )
-                }
-                Column(
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(weights.bodyWeight)
-                        .background(colors.surface)
-                        .clip(RectangleShape)
-                ) {
-                    LineChart(
-                        graphData =
-                        GraphData(
-                            graphDataList = graphData.graphDataList,
-                            padding = graphData.padding,
-                            coordinateFormatter = graphData.coordinateFormatter
-                        ),
-                        colors = colors,
-                        scale = scale,
-                        offset = offset,
-                        onScaleChanged = { scale = it },
-                        onOffsetChanged = { offset = it },
-                        gestureListener = { centroid, panAmount, zoom -> pan = panAmount },
-                        textPaint = textPaint,
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .weight(weights.axisWeight)
-                        .background(colors.surface)
-                ) {
-
-                }
+                LineChart(
+                    graphData =
+                    GraphData(
+                        graphDataList = graphData.graphDataList,
+                        padding = graphData.padding,
+                        coordinateFormatter = graphData.coordinateFormatter
+                    ),
+                    colors = colors,
+                    scale = scale,
+                    offset = offset,
+                    onScaleChanged = { scale = it },
+                    onOffsetChanged = { offset = it },
+                    gestureListener = { centroid, panAmount, zoom -> pan = panAmount },
+                    textPaint = textPaint,
+                )
             }
-            Row(
+            Column(
                 modifier = Modifier
-                    .weight(weights.bottomRowWeight)
                     .fillMaxWidth()
-                    .fillMaxHeight(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top
+                    .fillMaxHeight()
+                    .weight(weights.axisWeight)
+                    .background(colors.surface)
             ) {
-                Column(
-                    modifier =
-                    Modifier
-                        .background(colors.surface)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .weight(weights.axisWeight)
-                ) {}
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(weights.bodyWeight)
-                        .background(colors.surface)
-                ) { XAxisLandscape(colors = colors, scale = scale, offset = offset, graphData = graphData) }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .weight(weights.axisWeight)
-                        .background(colors.surface)
-                ) {
 
-                }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .weight(weights.bottomRowWeight)
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Top
+        ) {
+            Column(
+                modifier =
+                Modifier
+                    .background(colors.surface)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .weight(weights.axisWeight)
+            ) {}
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(weights.bodyWeight)
+                    .background(colors.surface)
+            ) { XAxisLandscape(colors = colors, scale = scale, offset = offset, graphData = graphData) }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .weight(weights.axisWeight)
+                    .background(colors.surface)
+            ) {
+
             }
         }
     }

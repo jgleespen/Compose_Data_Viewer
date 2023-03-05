@@ -76,7 +76,7 @@ fun TestScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(0.85f)
             ) {
-                ChartHolderLandscape().ChartHolderLandscape(graphData = graphData, colors = colors, textXOffset = textXOffset, weights = weights)
+                ChartHolderLandscape(graphData = graphData, colors = colors, textXOffset = textXOffset, weights = weights)
             }
         }
 

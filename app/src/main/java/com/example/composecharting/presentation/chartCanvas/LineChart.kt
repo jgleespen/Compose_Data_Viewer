@@ -82,7 +82,7 @@ fun LineChart(
 
         val decrementY = (size.height / (totalYMax - totalYMin)) * 5f
         var stepY = size.height
-        for (i in 0..(size.height.toInt())) {
+        for (i in 0..(size.height / decrementY).toInt()) {
             if (stepY < (size.height))
                 drawLine(
                     start = Offset(offset.x + (size.width / scale), stepY),
@@ -94,6 +94,7 @@ fun LineChart(
             stepY -= decrementY
         }
 
+        // X axis
         drawLine(
             start = Offset(
                 x = offset.x,
@@ -106,6 +107,8 @@ fun LineChart(
             color = colors.onSurface,
             strokeWidth = 5.dp.toPx() / scale
         )
+
+        // Y Axis
         drawLine(
             start = Offset(
                 offset.x,

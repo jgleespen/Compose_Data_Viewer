@@ -12,6 +12,15 @@ class DataSet(
     var yMax = Float.MIN_VALUE
     var yMin = Float.MAX_VALUE
 
+    fun getLastX(): Float {
+        return coordinateArray.first().last()
+    }
+    fun addLastX(element: Float) {
+        coordinateArray.apply {
+            first().add(element)
+        }
+    }
+
     fun init() {
         coordinateArray[0].forEach { x ->
             xMax = maxOf(x, xMax)

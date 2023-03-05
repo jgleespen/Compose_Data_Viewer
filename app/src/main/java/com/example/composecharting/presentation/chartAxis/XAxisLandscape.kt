@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.composecharting.data.bundle.GraphData
 
 @Composable
-fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  offset: Offset) {
+fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offset: Offset) {
     val density = LocalDensity.current
 
 /*
@@ -30,17 +30,17 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
     val totalXMin = graphData.graphDataList.totalXMax.value
 */
 
-    val textYOffset = offset.y  + (35f / scale)
-    val xMax = remember { mutableStateOf(graphData.graphDataList.totalXMax.value)}
-    val xMin = remember { mutableStateOf(graphData.graphDataList.totalXMin.value)}
+    val textYOffset = offset.y + (35f / scale)
+    val xMax = remember { mutableStateOf(graphData.graphDataList.totalXMax.value) }
+    val xMin = remember { mutableStateOf(graphData.graphDataList.totalXMin.value) }
 
-    val textPaint = remember { mutableStateOf(Paint())}
-     textPaint.value =
-            Paint().apply {
-                color = Color.BLACK
-                textAlign = Paint.Align.LEFT
-                textSize = density.run { 12.sp.toPx() }
-            }
+    val textPaint = remember { mutableStateOf(Paint()) }
+    textPaint.value =
+        Paint().apply {
+            color = Color.BLACK
+            textAlign = Paint.Align.LEFT
+            textSize = density.run { 12.sp.toPx() }
+        }
     textPaint.value.isAntiAlias = true
     textPaint.value.isLinearText = true
     Canvas(modifier = Modifier
@@ -60,14 +60,15 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
         val maxX = width * (scale - 1f) / scale
         textPaint.value.textSize /= scale
 
-        val increment = (width) / (xMax.value - xMin.value)
+        val increment = ((width) / (xMax.value - xMin.value)) * coerceIn(, 5f)
 
         var step = 0f
         var text = xMin.value
+        
 
 
-        for (i in 0..xMax.value.toInt()) {
-            if(text.toInt() > 0f && text.toInt() % 1 == 0 && step <= offset.x + ((width  + 5.dp.toPx()) / scale)) {
+        for (i in 0..((width) / (increment)).toInt()) {
+            if (text.toInt() > 0f && text.toInt() % 1 == 0 && step <= offset.x + ((width + 5.dp.toPx()) / scale)) {
                 drawContext.canvas.nativeCanvas.drawText(
                     "${text.toInt()}",
                     step - (3.dp.toPx() / scale),
@@ -82,8 +83,8 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  off
                     alpha = 0.7f
                 )
             }
-            text += 1f
-            step +=  increment
+            text += 5f
+            step += increment
         }
     }
 }
