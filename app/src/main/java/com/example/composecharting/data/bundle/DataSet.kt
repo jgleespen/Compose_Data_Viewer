@@ -11,8 +11,7 @@ class DataSet(
     var xMin = Float.MAX_VALUE
     var yMax = Float.MIN_VALUE
     var yMin = Float.MAX_VALUE
-
-    fun init() {
+    fun normalizeToMaxMin() {
         coordinateArray[0].forEach { x ->
             xMax = maxOf(x, xMax)
             xMin = minOf(x, xMin)

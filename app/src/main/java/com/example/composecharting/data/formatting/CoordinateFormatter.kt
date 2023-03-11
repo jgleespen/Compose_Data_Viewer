@@ -2,6 +2,7 @@ package com.example.composecharting.data.formatting
 
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 
 class CoordinateFormatter {
     //formula for scaling coordinates points (x, y) to new values that will result in a graph that fills the canvas height and width evenly
@@ -24,7 +25,7 @@ class CoordinateFormatter {
         listY.forEachIndexed { i, it ->
             coordinateList.add(
                 Offset(
-                    x = 0f + (((listX[i] - xMin) * (width - 0f)) / (xMax - xMin)),
+                    x = 50f+ ((listX[i] - xMin) * (width - 50f)) / (xMax - xMin),
                     y = ((yMax - it) * (height / (yMax - yMin)))
                 )
             )

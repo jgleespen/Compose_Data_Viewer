@@ -13,8 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 import com.example.composecharting.data.bundle.GraphData
 
+/*
 @Composable
 fun BarChart(
     graphData: GraphData,
@@ -75,6 +77,7 @@ fun BarChart(
             stepY -= incrementY
 
         }
+*/
 /* BOUND LINES FOR VISUAL TESTING
             drawCircle(
                 color = colors.tertiary,
@@ -106,11 +109,14 @@ fun BarChart(
                 strokeWidth = 5f
             )
 
-*/
+*//*
+
         val width = size.width.toFloat()
         val height = size.height.toFloat()
         graphData.graphDataList.coordinates.forEach { dataSet ->
             val temp = graphData.coordinateFormatter.normalizeCoordinates(
+                maxX = 0f,
+                maxY = 0f,
                 listX = dataSet.coordinateArray[0],
                 listY = dataSet.coordinateArray[1],
                 yMax = totalYMax,
@@ -119,7 +125,8 @@ fun BarChart(
                 xMin = dataSet.xMin,
                 height = size.height,
                 width = size.width,
-                padding = graphData.padding
+                padding = graphData.padding,
+                xOffset = 50.dp.toPx()
             )
 
             var i = 0
@@ -144,6 +151,7 @@ fun BarChart(
 
 
         }
+*/
 /*
             var current =
                 graphData.coordinateFormatter.getCoordList(
@@ -232,7 +240,8 @@ fun BarChart(
                 drawCircle(color = colors.onSurfaceVariant, radius = 10f, center = initial[i])
             }
 */
+/*
     }
 
 
-}
+}*/
