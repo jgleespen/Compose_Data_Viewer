@@ -27,12 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun XAxisLandscape(
-    graphData: GraphData,
-    colors: ColorScheme,
-    scale: Float = 0f,
-    offset: Offset = Offset(0f, 0f)
-) {
+fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offset: Offset) {
     val density = LocalDensity.current
     val xOffsetTemp_DELETE = 50f
 
