@@ -37,7 +37,7 @@ fun LineChart(
     val totalYMax = graphData.graphDataList.totalYMax.value + 20f
     val totalYMin = graphData.graphDataList.totalYMin.value - 20f
     val totalXMax = graphData.graphDataList.totalXMax.value
-    val totalXMin = graphData.graphDataList.totalYMin.value
+    val totalXMin = graphData.graphDataList.totalXMin.value
     var offset by remember { mutableStateOf(offset) }
     var scale by remember { mutableStateOf(scale) }
     var maxX by remember { mutableStateOf(0f) }
@@ -101,6 +101,8 @@ fun LineChart(
                     listY = dataSet.coordinateArray[1],
                     yMax = totalYMax,
                     yMin = totalYMin,
+                    totalXMax = totalXMax,
+                    totalXMin = totalXMin,
                     xMax = dataSet.xMax,
                     xMin = dataSet.xMin,
                     height = size.height,
@@ -117,11 +119,11 @@ fun LineChart(
                     strokeWidth = 3.5f.dp.toPx()
                 )
                 drawLine(
-                    color = colors.onSurface,
-                    strokeWidth = 5.dp.toPx() / scale,
+                    color = colors.error,
+                    strokeWidth = 3.dp.toPx() / scale,
                     start = Offset(
                         temp[i].x,
-                        temp[i].y + 6.dp.toPx()
+                        temp[i].y + 200.dp.toPx()
                     ),
                     end = Offset(
                         temp[i].x,

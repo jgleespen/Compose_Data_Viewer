@@ -2,7 +2,6 @@ package com.example.composecharting.data.formatting
 
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.dp
 
 class CoordinateFormatter {
     //formula for scaling coordinates points (x, y) to new values that will result in a graph that fills the canvas height and width evenly
@@ -13,24 +12,46 @@ class CoordinateFormatter {
         yMin: Float,
         xMax: Float,
         xMin: Float,
+        totalXMax: Float,
+        totalXMin: Float,
         height: Float,
         width: Float,
-        padding: Float //provides a right shift modifier that can be scaled and applied to an axis
+        padding: Float //provides a right shift modifier that can be scaled and applied to an axis, totalXMax: kotlin.Float){}
     ): MutableList<Offset> {
         val coordinateList: MutableList<Offset> = mutableListOf()
-
+        Log.d("TOTALXMAX ", "${totalXMax}" )
+        Log.d("TOTALXMIN ", "${totalXMin}" )
 
 
         //if (listX.size == listY.size) {
+/*
         listY.forEachIndexed { i, it ->
             coordinateList.add(
                 Offset(
-                    x = 50f+ ((listX[i] - xMin) * (width - 50f)) / (xMax - xMin),
+                    //x = 0f + (listX[i] - xMin) * (width - 0f) / (xMax - xMin),
+                    //normalized_x = (x - old_x_min) * (new_x_max - new_x_min) / (old_x_max - old_x_min) + new_x_min
+                    x = (listX[i] - totalXMin) * (width / (totalXMax - totalXMin)),
+                    y = ((yMax - it) * (height / (yMax - yMin)))
+                )
+
+            )
+        }
+*/
+        var index: Int
+        if(listX.size > listY.size)
+            index = (listX.size - listY.size) - 1
+        else
+            index = 0
+
+        listY.forEachIndexed { i, it ->
+            coordinateList.add(
+                Offset(
+                    x = (listX[i] - totalXMin) * (width / (totalXMax - totalXMin)),
                     y = ((yMax - it) * (height / (yMax - yMin)))
                 )
             )
+            index++
         }
-        //      }
         return coordinateList
     }
     fun normalizeCoordinates(

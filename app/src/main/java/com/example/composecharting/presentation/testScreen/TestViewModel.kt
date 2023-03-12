@@ -20,16 +20,19 @@ class TestViewModel @Inject constructor() : ViewModel() {
     //============TEST VALUES
 
     var x1: MutableList<Float> = mutableListOf(
-        1f, 10f, 25f, 35f, 60f
+        10f, 20f, 25f, 35f, 45f
     )
     val y1: MutableList<Float> = mutableListOf(
         50f, 30f, 40f, 35f, 40f
     )
+
+
+
     var x2: MutableList<Float> = mutableListOf(
-        1f, 15f, 20f, 30f, 40f, 43f, 55f
+        1f, 10f, 15f, 20f, 30f, 40f, 43f, 55f
     )
     val y2: MutableList<Float> = mutableListOf(
-        60f, 62.5f, 65f, 65f, 63f, 69f, 60f
+        60f, 40f, 62.5f, 65f, 65f, 63f, 69f, 60f
     )
     var a = DataSet(
         coordinateArray = arrayOf(x1, y1)
@@ -42,14 +45,6 @@ class TestViewModel @Inject constructor() : ViewModel() {
     var dataList = mutableStateOf(GraphDataList(coordinates = mutableListOf(b, a)))
 
     init {
-        a.xArr.last().let {lastElmA ->
-            b.xArr.last().let {lastElmB ->
-               when(maxOf(lastElmA, lastElmB)) {
-                   lastElmA -> b.coordinateArray[0].add(lastElmA)
-                   else -> a.coordinateArray[0].add(lastElmB)
-               }
-            }
-        }
         a.normalizeToMaxMin()
         b.normalizeToMaxMin()
         dataList.value = GraphDataList(

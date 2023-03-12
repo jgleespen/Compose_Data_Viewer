@@ -64,11 +64,11 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offs
         val width = size.width
         val xMax = graphData.graphDataList.totalXMax.value
         val xMin = graphData.graphDataList.totalXMin.value
-        val increment: Float = (width - 50f) / (xMax - xMin)
-        val rangeOfAxis: Int = ((width - 50f) / increment).toInt()
+        val increment: Float = ((width) / (xMax - xMin)) * 1
+        val rangeOfAxis: Int = ((width) / increment).toInt()
         textPaint.value.textSize /= scale
 
-        var step = 50f
+        var step = 0f
         var text = graphData.graphDataList.totalXMin.value
         //Log.d("XMAX??", "${xMax.toInt()}")
         //Log.d("INCREMENT", "${increment}")
