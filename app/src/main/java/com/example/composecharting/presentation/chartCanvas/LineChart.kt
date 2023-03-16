@@ -37,7 +37,7 @@ fun LineChart(
     val totalYMax = graphData.graphDataList.totalYMax.value + 20f
     val totalYMin = graphData.graphDataList.totalYMin.value - 20f
     val totalXMax = graphData.graphDataList.totalXMax.value
-    val totalXMin = graphData.graphDataList.totalYMin.value
+    val totalXMin = graphData.graphDataList.totalXMin.value
     var offset by remember { mutableStateOf(offset) }
     var scale by remember { mutableStateOf(scale) }
     Canvas(
@@ -51,7 +51,7 @@ fun LineChart(
                     panZoomLock = false,
                     onGesture = { centroid, pan, zoom, _ ->
                         val oldScale = scale
-                        val newScale = (scale * zoom).coerceIn(1f, 2f)
+                        val newScale = (scale * zoom).coerceIn(1f, 3f)
                         val newOffset =
                             (offset + centroid / oldScale) - (centroid / newScale + pan / oldScale)
                         val maxX = size.width * (newScale - 1f) / newScale
@@ -127,8 +127,8 @@ fun LineChart(
                     listY = dataSet.coordinateArray[1],
                     yMax = totalYMax,
                     yMin = totalYMin,
-                    xMax = dataSet.xMax,
-                    xMin = dataSet.xMin,
+                    xMax = totalXMax,
+                    xMin = totalXMin,
                     height = size.height,
                     width = width,
                     padding = graphData.padding
