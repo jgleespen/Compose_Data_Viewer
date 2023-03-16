@@ -1,8 +1,6 @@
-package com.example.composecharting.data.bundle
+package com.example.composecharting.presentation.composables.oldChart.util
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 
 class GraphDataList(
     var coordinates: MutableList<DataSet>

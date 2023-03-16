@@ -1,6 +1,4 @@
-package com.example.composecharting.data.bundle
-
-import android.util.Log
+package com.example.composecharting.presentation.composables.oldChart.util
 
 class DataSet(
     val coordinateArray: Array<MutableList<Float>>,

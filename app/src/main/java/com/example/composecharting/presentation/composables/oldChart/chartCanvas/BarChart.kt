@@ -1,4 +1,4 @@
-package com.example.composecharting.presentation.chartCanvas
+package com.example.composecharting.presentation.composables.oldChart.chartCanvas
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.composecharting.data.bundle.GraphData
+import com.example.composecharting.presentation.composables.oldChart.util.GraphData
 
 @Composable
 fun BarChart(

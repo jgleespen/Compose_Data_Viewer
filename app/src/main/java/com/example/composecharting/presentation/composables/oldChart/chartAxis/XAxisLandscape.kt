@@ -2,7 +2,6 @@ package com.company.strengthtracker.presentation.test_screen.graph_utils
 
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +18,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composecharting.data.bundle.GraphData
+import com.example.composecharting.presentation.composables.oldChart.util.GraphData
 
 @Composable
-fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float,  offset: Offset) {
+fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offset: Offset) {
     val density = LocalDensity.current
 
 /*

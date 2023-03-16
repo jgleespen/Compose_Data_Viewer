@@ -7,15 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.composecharting.data.bundle.GraphData
-import com.example.composecharting.data.formatting.CoordinateFormatter
-import com.example.composecharting.presentation.chartFormatters.ChartHolderLandscape
-import com.example.composecharting.presentation.chartFormatters.ChartWeight
+import com.example.composecharting.presentation.composables.oldChart.util.GraphData
+import com.example.composecharting.presentation.composables.oldChart.util.CoordinateFormatter
+import com.example.composecharting.presentation.composables.oldChart.chartFormatters.ChartHolderLandscape
+import com.example.composecharting.presentation.composables.oldChart.chartFormatters.ChartWeight
 
 @kotlin.OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +74,7 @@ fun TestScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(0.85f)
             ) {
-                ChartHolderLandscape().ChartHolderLandscape(graphData = graphData, colors = colors, textXOffset = textXOffset, weights = weights)
+                ChartHolderLandscape(graphData = graphData, colors = colors, textXOffset = textXOffset, weights = weights)
             }
         }
 

@@ -1,6 +1,4 @@
-package com.example.composecharting.data.bundle
-
-import com.example.composecharting.data.formatting.CoordinateFormatter
+package com.example.composecharting.presentation.composables.oldChart.util
 
 data class GraphData(
     val graphDataList: GraphDataList,

@@ -1,4 +1,4 @@
-package com.example.composecharting.presentation.chartFormatters
+package com.example.composecharting.presentation.composables.oldChart.chartFormatters
 
 import android.util.FloatMath
 

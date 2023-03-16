@@ -1,9 +1,10 @@
 package com.example.composecharting.presentation.testScreen
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
-import com.example.composecharting.data.bundle.DataSet
-import com.example.composecharting.data.bundle.GraphDataList
+import com.example.composecharting.presentation.composables.oldChart.util.DataSet
+import com.example.composecharting.presentation.composables.oldChart.util.GraphDataList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,7 +19,6 @@ class TestViewModel @Inject constructor() : ViewModel() {
     * m:
     * */
     //============TEST VALUES
-
     var x1: MutableList<Float> = mutableListOf(
         5f, 10f, 25f, 35f, 50f
     )
@@ -26,10 +26,10 @@ class TestViewModel @Inject constructor() : ViewModel() {
         50f, 30f, 40f, 35f, 40f
     )
     var x2: MutableList<Float> = mutableListOf(
-        1f, 15f
+        1f, 15f, 30f
     )
     val y2: MutableList<Float> = mutableListOf(
-        60f, 62.5f
+        60f, 62.5f, 50f
     )
     var a = DataSet(
         coordinateArray = arrayOf(x1, y1)

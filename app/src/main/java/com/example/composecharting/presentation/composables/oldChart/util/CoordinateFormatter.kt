@@ -1,6 +1,5 @@
-package com.example.composecharting.data.formatting
+package com.example.composecharting.presentation.composables.oldChart.util
 
-import android.util.Log
 import androidx.compose.ui.geometry.Offset
 
 class CoordinateFormatter {
