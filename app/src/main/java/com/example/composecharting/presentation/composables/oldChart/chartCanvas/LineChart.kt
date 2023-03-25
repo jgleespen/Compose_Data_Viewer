@@ -33,8 +33,8 @@ fun LineChart(
     onOffsetChanged: (Offset) -> Unit,
     gestureListener: (centroid: Offset, pan: Offset, zoom: Float) -> Unit
 ) {
-    val totalYMax = graphData.graphDataList.totalYMax.value + 20f
-    val totalYMin = graphData.graphDataList.totalYMin.value - 20f
+    val totalYMax = graphData.graphDataList.totalYMax.value
+    val totalYMin = graphData.graphDataList.totalYMin.value
     val totalXMax = graphData.graphDataList.totalXMax.value
     val totalXMin = graphData.graphDataList.totalXMin.value
     var offset by remember { mutableStateOf(offset) }
@@ -50,13 +50,39 @@ fun LineChart(
                     panZoomLock = false,
                     onGesture = { centroid, pan, zoom, _ ->
                         val oldScale = scale
-                        val newScale = (scale * zoom).coerceIn(1f, 3f)
+                        val newScale = (scale * zoom).coerceIn(0.8f, 3f)
                         val newOffset =
                             (offset + centroid / oldScale) - (centroid / newScale + pan / oldScale)
-                        val maxX = size.width * (newScale - 1f) / newScale
-                        val maxY = size.height * (newScale - 1f) / newScale
-                        offset =
-                            Offset(newOffset.x.coerceIn(0f, maxX), newOffset.y.coerceIn(0f, maxY))
+                        val xBound: Float
+                        val yBound: Float
+                        if (newScale - 1f < 0) {
+                            xBound = size.width * (newScale - 1f)
+                            yBound = size.height * (newScale - 1f)
+                        } else {
+                            xBound = size.width * (newScale - 1f) / newScale
+                            yBound = size.height * (newScale - 1f) / newScale
+                        }
+
+                        println("xBound: $xBound")
+                        println("yBound: $yBound")
+                        println("offset: (${newOffset.x}, ${newOffset.y}")
+
+
+                        //Mess with this more
+                        //I think it is better to allow for a slight zoom out then enforce padding but im not sure, maybe an option. 
+                        if (newScale < 1f) {
+                            offset = Offset(
+                                newOffset.x.coerceIn(xBound, xBound + 100f),
+                                newOffset.y.coerceIn(yBound, yBound + 200f)
+                            )
+                        } else {
+                            offset = Offset(
+                                newOffset.x.coerceIn(0f, xBound),
+                                newOffset.y.coerceIn(0f, yBound)
+                            )
+                        }
+
+
                         scale = newScale
                         onScaleChanged(scale)
                         onOffsetChanged(offset)
@@ -77,6 +103,11 @@ fun LineChart(
         val maxX = size.width * (scale - 1f) / scale
         val maxY = size.height * (scale - 1f) / scale
         val width = size.width - 10.dp.toPx()
+        drawCircle(
+            color = Color.Red,
+            radius = 25f,
+            center = offset
+        )
 
 
         val decrementY = (size.height / (totalYMax - totalYMin)) * 5f
@@ -99,7 +130,7 @@ fun LineChart(
                 y = offset.y + (size.height - maxY)
             ),
             end = Offset(
-                x = offset.x + (size.width  / scale),
+                x = offset.x + (size.width / scale),
                 y = offset.y + (size.height - maxY)
             ),
             color = colors.onSurface,

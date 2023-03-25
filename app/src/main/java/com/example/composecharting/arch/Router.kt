@@ -1,6 +1,4 @@
-package com.example.mvvcmbase.viewmodel
-
-import com.example.mvvcmbase.models.Destination
+package com.example.composecharting.arch
 
 interface Router<TypeOfDestination: Destination> {
     fun routeTo(destination: TypeOfDestination)

@@ -59,7 +59,7 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offs
         val maxX = width * (scale - 1f) / scale
         textPaint.value.textSize /= scale
 
-        val increment = (width) / (xMax.value - xMin.value)
+        val increment = (width) / (xMax.value - xMin.value) * 5f
 
         var step = 0f
         var text = xMin.value
@@ -81,7 +81,7 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offs
                     alpha = 0.7f
                 )
             }
-            text += 1f
+            text += 5f
             step +=  increment
         }
     }

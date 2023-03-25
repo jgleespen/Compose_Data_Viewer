@@ -29,14 +29,13 @@ fun YAxisLandscape(
     textXOffset: Float
 ) {
     val density = LocalDensity.current
-    val totalYMax = graphData.graphDataList.totalYMax.value + 20f
-    val totalYMin = graphData.graphDataList.totalYMin.value - 20f
+    val totalYMax = graphData.graphDataList.totalYMax.value
+    val totalYMin = graphData.graphDataList.totalYMin.value
     val textPaint = remember { mutableStateOf(Paint()) }
     textPaint.value =
         Paint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.RIGHT
-//            textSize = density.run { 12.sp.toPx() }
             textSize = density.run { 12.dp.toPx() }
         }
     textPaint.value.isSubpixelText = true

@@ -1,4 +1,4 @@
-package com.example.mvvcmbase.models
+package com.example.composecharting.arch
 
 interface ViewEvent {
 }

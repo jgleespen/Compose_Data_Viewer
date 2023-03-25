@@ -1,7 +1,6 @@
-package com.example.mvvcmbase.viewmodel
+package com.example.composecharting.arch
 
 import androidx.lifecycle.ViewModel
-import com.example.mvvcmbase.models.ViewEvent
 
 interface EventReceiver<TypeOfViewEvent : ViewEvent> {
     /** Invoked by the View and received by the implementing [ViewModel] **/

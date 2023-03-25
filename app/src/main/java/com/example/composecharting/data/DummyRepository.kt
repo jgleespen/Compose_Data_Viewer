@@ -1,9 +1,11 @@
 package com.example.composecharting.data
 
 import androidx.compose.ui.geometry.Offset
+import javax.inject.Inject
 
-class DummyRepository{
-    suspend fun getUnevenDoubleList(): List<List<Offset>> {
+class DummyRepository @Inject constructor(
+){
+    suspend fun getUnevenData(): List<List<Offset>> {
         return listOf(
             listOf(
                 Offset(5f, 50f),
@@ -18,11 +20,5 @@ class DummyRepository{
                 Offset(30f, 50f)
             )
         )
-    }
-}
-
-class GetUnevenDoubleListUseCase() {
-    suspend operator fun invoke() {
-        DummyRepository().getUnevenDoubleList()
     }
 }

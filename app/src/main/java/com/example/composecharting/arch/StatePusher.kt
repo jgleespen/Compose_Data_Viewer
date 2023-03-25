@@ -1,8 +1,6 @@
-package com.example.mvvcmbase.viewmodel
+package com.example.composecharting.arch
 
 import androidx.lifecycle.ViewModel
-import com.example.mvvcmbase.models.ViewEvent
-import com.example.mvvcmbase.models.ViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

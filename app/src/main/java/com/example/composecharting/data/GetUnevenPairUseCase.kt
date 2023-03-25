@@ -6,6 +6,6 @@ import javax.inject.Inject
 class GetUnevenPairUseCase
 @Inject constructor(private val dummyRepository: DummyRepository){
     suspend operator fun invoke(): List<List<Offset>> {
-        return dummyRepository.getUnevenDoubleList()
+        return dummyRepository.getUnevenData()
     }
 }
