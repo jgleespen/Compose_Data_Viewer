@@ -29,8 +29,9 @@ fun YAxisLandscape(
     textXOffset: Float
 ) {
     val density = LocalDensity.current
-    val totalYMax = graphData.graphDataList.totalYMax.value
-    val totalYMin = graphData.graphDataList.totalYMin.value
+    val axisPadding = 20f
+    val totalYMax = graphData.graphDataList.totalYMax.value + axisPadding
+    val totalYMin = graphData.graphDataList.totalYMin.value - axisPadding
     val textPaint = remember { mutableStateOf(Paint()) }
     textPaint.value =
         Paint().apply {
@@ -59,6 +60,11 @@ fun YAxisLandscape(
 
         textPaint.value.textSize /= scale
 
+
+/*
+        var text = ""
+        val stepSize = size.height / (totalYMax - totalYMin)
+*/
         var text = totalYMin
         val decrementY = (size.height / (totalYMax - totalYMin)) * 5f
         var step = size.height

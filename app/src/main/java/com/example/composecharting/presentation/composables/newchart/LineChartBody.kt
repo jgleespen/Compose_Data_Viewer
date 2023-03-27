@@ -7,7 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import kotlinx.coroutines.CoroutineScope
-
+/*
+* Notes:
+* No down-scaling to start
+* Derive number padding: size of range
+* Derive axis step size: size of range, round to selected step (5, 10,...)
+* */
 @Composable
 @ExperimentalMaterial3Api
 fun rememberLineChartState(
@@ -17,8 +22,9 @@ fun rememberLineChartState(
 
 class LineChartState(
     private val data: List<List<Offset>>,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) {
+
     var maximumY: Float by mutableStateOf(Float.NEGATIVE_INFINITY)
         private set
     var maximumX: Float by mutableStateOf(Float.POSITIVE_INFINITY)

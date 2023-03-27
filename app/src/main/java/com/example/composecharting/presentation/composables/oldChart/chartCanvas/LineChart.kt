@@ -1,6 +1,7 @@
 package com.example.composecharting.presentation.composables.oldChart.chartCanvas
 
 import android.graphics.Paint
+import android.util.Range
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.example.composecharting.presentation.composables.oldChart.util.GraphData
+import com.example.composecharting.presentation.composables.oldChart.util.normalize
 
 // TODO
 // -> curved line option
@@ -33,10 +35,13 @@ fun LineChart(
     onOffsetChanged: (Offset) -> Unit,
     gestureListener: (centroid: Offset, pan: Offset, zoom: Float) -> Unit
 ) {
-    val totalYMax = graphData.graphDataList.totalYMax.value
-    val totalYMin = graphData.graphDataList.totalYMin.value
-    val totalXMax = graphData.graphDataList.totalXMax.value
-    val totalXMin = graphData.graphDataList.totalXMin.value
+    //val numberPadding =
+    val xPadding = (graphData.graphDataList.totalXMax.value - graphData.graphDataList.totalXMin.value) * 0.1f
+    val yPadding = (graphData.graphDataList.totalYMax.value - graphData.graphDataList.totalYMin.value) * 0.1f
+    val totalYMax = graphData.graphDataList.totalYMax.value + yPadding
+    val totalYMin = graphData.graphDataList.totalYMin.value - yPadding
+    val totalXMax = graphData.graphDataList.totalXMax.value + xPadding
+    val totalXMin = graphData.graphDataList.totalXMin.value - yPadding
     var offset by remember { mutableStateOf(offset) }
     var scale by remember { mutableStateOf(scale) }
     Canvas(
@@ -50,7 +55,7 @@ fun LineChart(
                     panZoomLock = false,
                     onGesture = { centroid, pan, zoom, _ ->
                         val oldScale = scale
-                        val newScale = (scale * zoom).coerceIn(0.8f, 3f)
+                        val newScale = (scale * zoom).coerceIn(1f, 3f)
                         val newOffset =
                             (offset + centroid / oldScale) - (centroid / newScale + pan / oldScale)
                         val xBound: Float
@@ -63,17 +68,25 @@ fun LineChart(
                             yBound = size.height * (newScale - 1f) / newScale
                         }
 
-                        println("xBound: $xBound")
-                        println("yBound: $yBound")
-                        println("offset: (${newOffset.x}, ${newOffset.y}")
+                        //println("xBound: $xBound")
+                        //println("yBound: $yBound")
+                        //println("offset: (${newOffset.x}, ${newOffset.y}")
 
 
                         //Mess with this more
                         //I think it is better to allow for a slight zoom out then enforce padding but im not sure, maybe an option. 
                         if (newScale < 1f) {
+                            val normalizedScale = newScale.normalize(
+                                currentMin = 0.8f,
+                                currentMax = 1f,
+                                newMin = 0f,
+                                newMax = 1f
+                            )
+
+                            println("(size.width * xBound) = ${(size.width + xBound) * normalizedScale}")
                             offset = Offset(
-                                newOffset.x.coerceIn(xBound, xBound + 100f),
-                                newOffset.y.coerceIn(yBound, yBound + 200f)
+                                newOffset.x.coerceIn(xBound, xBound + ((size.width + xBound) * normalizedScale)),
+                                newOffset.y.coerceIn(yBound, yBound + ((size.height + yBound) * normalizedScale))
                             )
                         } else {
                             offset = Offset(
@@ -101,7 +114,7 @@ fun LineChart(
         //30.dp point padding
         //25.dp grid padding
         val maxX = size.width * (scale - 1f) / scale
-        val maxY = size.height * (scale - 1f) / scale
+        val yBound = size.height * (scale - 1f) / scale
         val width = size.width - 10.dp.toPx()
         drawCircle(
             color = Color.Red,
@@ -126,12 +139,12 @@ fun LineChart(
 
         drawLine(
             start = Offset(
-                x = offset.x,
-                y = offset.y + (size.height - maxY)
+                x = offset.x - (100f / scale),
+                y = offset.y + (size.height - yBound) - (100f / scale)
             ),
             end = Offset(
                 x = offset.x + (size.width / scale),
-                y = offset.y + (size.height - maxY)
+                y = offset.y + (size.height - yBound) - (100f / scale)
             ),
             color = colors.onSurface,
             strokeWidth = 5.dp.toPx() / scale
@@ -143,7 +156,7 @@ fun LineChart(
             ),
             end = Offset(
                 offset.x,
-                size.height
+                size.height * scale
             ),
             color = colors.onSurface,
             strokeWidth = 5.dp.toPx() / scale

@@ -30,8 +30,13 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offs
 */
 
     val textYOffset = offset.y  + (35f / scale)
+/*
     val xMax = remember { mutableStateOf(graphData.graphDataList.totalXMax.value)}
     val xMin = remember { mutableStateOf(graphData.graphDataList.totalXMin.value)}
+*/
+    val axisPadding = 0f
+    val xMax = graphData.graphDataList.totalXMax.value + axisPadding
+    val xMin = graphData.graphDataList.totalXMin.value - axisPadding
 
     val textPaint = remember { mutableStateOf(Paint())}
      textPaint.value =
@@ -59,13 +64,13 @@ fun XAxisLandscape(graphData: GraphData, colors: ColorScheme, scale: Float, offs
         val maxX = width * (scale - 1f) / scale
         textPaint.value.textSize /= scale
 
-        val increment = (width) / (xMax.value - xMin.value) * 5f
+        val increment = (width) / (xMax - xMin) * 5f
 
         var step = 0f
-        var text = xMin.value
+        var text = xMin
 
 
-        for (i in 0..xMax.value.toInt()) {
+        for (i in 0..xMax.toInt()) {
             if(text.toInt() > 0f && text.toInt() % 1 == 0 && step <= offset.x + ((width  + 5.dp.toPx()) / scale)) {
                 drawContext.canvas.nativeCanvas.drawText(
                     "${text.toInt()}",
