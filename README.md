@@ -5,3 +5,8 @@
 
 https://user-images.githubusercontent.com/97764140/221434362-ebb090f3-d11a-4387-a3b8-bc5eb2ebfc5a.mp4
 
+# WIP Features
+* Export charts as bitmaps
+* Export charts as CSVs
+* More aesthetic look
+
