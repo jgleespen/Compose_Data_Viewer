@@ -4,8 +4,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import com.example.dataviewer.ComponentEvent
 import com.example.dataviewer.ComponentState
-import com.example.mvvcmbase.models.ViewEvent
-import com.example.mvvcmbase.models.ViewState
 
 
 data class LineChartColors(

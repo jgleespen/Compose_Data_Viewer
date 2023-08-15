@@ -34,14 +34,15 @@ fun Modifier.lineChartGraphics(
             colors.AxisColor
         )
 
-        drawChartView(
+        /*drawChartView(
             offset,
             scale,
             yBound,
             pad
         ) {
-            drawData(state.data, colors)
-        }
+        }*/
+
+        drawData(state.data, colors)
     }
 }
 
@@ -91,7 +92,7 @@ private fun DrawScope.drawAxis(
         ),
         end = Offset(
             offset.x + pad,
-            offset.y + (size.height - yBound) - (pad - (2.5.dp.toPx() / scale))
+            offset.y + (size.height / scale) - (pad - (2.5.dp.toPx() / scale))
         ),
         color = color,
         strokeWidth = 5.dp.toPx() / scale
@@ -99,11 +100,11 @@ private fun DrawScope.drawAxis(
     drawLine(
         start = Offset(
             x = offset.x + pad,
-            y = offset.y + (size.height - yBound) - pad
+            y = offset.y + (size.height / scale) - pad
         ),
         end = Offset(
             x = offset.x + (size.width / scale),
-            y = offset.y + (size.height - yBound) - pad
+            y = offset.y + (size.height / scale) - pad
         ),
         color = color,
         strokeWidth = 5.dp.toPx() / scale

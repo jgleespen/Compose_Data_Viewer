@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface ComponentState
 interface ComponentEvent
-abstract class ComposableViewModel<TypeOfViewState : ComponentState, TypeOfViewEvent : ComponentEvent>
+abstract class ComposableModel<TypeOfViewState : ComponentState, TypeOfViewEvent : ComponentEvent>
     : EventReceiver<TypeOfViewEvent>, StatePusher<TypeOfViewState> {
     val lastPushedState: TypeOfViewState? get() = viewState.value
     private var _viewState: MutableStateFlow<TypeOfViewState?> = MutableStateFlow(null)

@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "composedataviewer"
 include ':app'
-include ':mvvcmbase'
 include ':dataViewer'
+include ':exampleapplication'

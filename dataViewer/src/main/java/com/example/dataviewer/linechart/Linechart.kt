@@ -16,7 +16,7 @@ import com.example.dataviewer.modifier.lineChartGestures
 import com.example.dataviewer.modifier.lineChartGraphics
 
 @Composable
-fun LineChartDelegate(
+fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
     title: (@Composable () -> Unit),

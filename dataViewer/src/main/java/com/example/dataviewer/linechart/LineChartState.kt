@@ -3,7 +3,7 @@ package com.example.dataviewer.linechart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Offset
-import com.example.dataviewer.ComposableViewModel
+import com.example.dataviewer.ComposableModel
 
 @Composable
 @ExperimentalMaterial3Api
@@ -19,7 +19,7 @@ class LineChartState(
     data: List<List<Offset>>,
     private val height: Float,
     private val width: Float,
-) : ComposableViewModel<LineChartViewState, LineChartViewEvent>() {
+) : ComposableModel<LineChartViewState, LineChartViewEvent>() {
     private val yMax: Float = data.map { it.maxBy(Offset::y) }.maxBy(Offset::y).y
     private val yMin: Float = data.map { it.minBy(Offset::y) }.minBy(Offset::y).y
     private val xMax: Float = data.map { it.maxBy(Offset::x) }.maxBy(Offset::x).x
